@@ -1,4 +1,5 @@
 import { Prisma } from '@prisma/client';
+import bcrypt from 'bcrypt';
 
 import {ApplicationError} from '../../middlewares/errors';
 import prisma from '../../utils';
@@ -10,8 +11,15 @@ interface SignupValues {
 }
 
 export const signUpService = async (data: SignupValues) => {
+	const password = await bcrypt.hash(data.password, 10);
 	try {
-		await prisma.account.create({ data });
+		await prisma.account.create({
+			data: {
+				email: data.email,
+				fullName: data.fullName,
+				password
+			}
+		});
 	} catch (error) {
 		if (error instanceof Prisma.PrismaClientKnownRequestError) {
 			if (error.code === 'P2002') {
