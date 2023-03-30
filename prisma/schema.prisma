@@ -8,16 +8,8 @@ datasource db {
 }
 
 model Account {
-  id         String @id @default(uuid()) @map("_id")
-  email      String @unique
-  fullName   String
-  password   String
-  todots     Todo[]
-  todoTaskId String
-}
-
-type Todo {
-  taskId      String  @default(uuid()) @map("_id")
-  description String
-  completed   Boolean
+  id       String @id @default(uuid()) @map("_id")
+  email    String @unique
+  fullName String
+  password String
 }
