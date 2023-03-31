@@ -19,7 +19,6 @@ const router = Router();
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 router.post('/todo', validate(schema), async (req: Request, res: Response) => {
-	console.log('req', req.body);
 	try {
 		await createTodoService(req.body);
 

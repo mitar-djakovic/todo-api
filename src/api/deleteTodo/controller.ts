@@ -6,17 +6,15 @@ import { deleteTodoService } from './service';
 
 const router = Router();
 
-router.delete('/todo/:listId/:position', async (req: Request, res: Response) => {
+router.delete('/todo/:listId/:todoId', async (req: Request, res: Response) => {
 	try {
-		const { listId, position} = req.params;
-		await deleteTodoService(listId, position);
-
-		console.log('list', listId, position);
+		const { listId, todoId} = req.params;
+		await deleteTodoService(listId, todoId);
 
 		return res.status(200).json({
 			status: 200,
 			data: {
-				position
+				todoId
 			},
 			message: 'Todo is deleted'
 		});

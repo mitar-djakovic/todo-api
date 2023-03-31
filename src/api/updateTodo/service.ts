@@ -3,7 +3,7 @@ import { Prisma } from '@prisma/client';
 import { ApplicationError } from '../../middlewares/errors';
 import prisma from '../../utils';
 
-export const updateTodoService = async (listId: string, checked: boolean, position: number) => {
+export const updateTodoService = async (listId: string, checked: boolean, todoId: string) => {
 	try {
 		const todoList = await prisma.todos.findUniqueOrThrow({
 			where: {
@@ -18,7 +18,7 @@ export const updateTodoService = async (listId: string, checked: boolean, positi
 				},
 				data: {
 					todos: {
-						set: todoList.todos.map((todo, index) => index === position ? ({
+						set: todoList.todos.map((todo) => todo.todoId === todoId ? ({
 							...todo,
 							completed: checked
 						}): todo)

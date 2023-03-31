@@ -3,26 +3,24 @@ import { Prisma } from '@prisma/client';
 import { ApplicationError } from '../../middlewares/errors';
 import prisma from '../../utils';
 
-export const deleteTodoService = async (listId: string, todoId: string) => {
+export const getAccountService = async (accountId: string) => {
 	try {
-		const todoList = await prisma.todos.findUniqueOrThrow({
+		const account = await prisma.account.findUniqueOrThrow({
 			where: {
-				id: listId
+				id: accountId
 			}
 		});
 
-		if (todoList) {
-			await prisma.todos.update({
-				where: {
-					id: listId
-				},
-				data: {
-					todos: {
-						set: todoList.todos.filter((todo ) => todo.todoId !== todoId)
-					}
-				}
-			});
-		}
+		const todoList = await prisma.todos.findUniqueOrThrow({
+			where: {
+				accountId: account.id
+			}
+		});
+		
+		return {
+			accountId,
+			listId: todoList.id
+		};
 	} catch (error) {
 		if (error instanceof Prisma.PrismaClientKnownRequestError) {
 			if (error.code === 'P2025') {

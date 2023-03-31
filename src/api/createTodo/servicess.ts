@@ -10,7 +10,6 @@ interface Todo {
 
 export const createTodoService = async (values: Todo) => {
 	try {
-		console.log('---', values);
 		const todoList = await prisma.todos.findUniqueOrThrow({
 			where: {
 				id: values.listId

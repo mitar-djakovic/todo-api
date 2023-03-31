@@ -2,18 +2,21 @@ import { Request, Response, Router } from 'express';
 
 import { ApplicationError } from '../../middlewares/errors';
 
-import { getTodosService } from './servicess';
+import { getAccountService } from './services';
 
 const router = Router();
 
-router.get('/todos/:listId', async (req: Request, res: Response) => {
+router.get('/account/:accountId', async (req: Request, res: Response) => {
 	try {
-		const response = await getTodosService(req.params.listId);
-		
-		return res.status(200).json({
-			status: 200,
-			data: response
-		});
+		const { accountId } = req.params;
+		const response = await getAccountService(accountId);
+
+		return res.status(200)
+			.json({
+				status: 200,
+				data: response
+			})
+			.end();
 	} catch (error) {
 		if (error instanceof ApplicationError) {
 			res.status(error.status).json(error).end();
