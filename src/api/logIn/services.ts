@@ -10,7 +10,6 @@ interface Credentials {
 
 export const loginService = async (credentials: Credentials) => {
 	try {
-		console.log('values', credentials);
 		const user = await prisma.account.findUniqueOrThrow({
 			where: {
 				email: credentials.email,
@@ -18,13 +17,18 @@ export const loginService = async (credentials: Credentials) => {
 		});
 
 		const match = await bcrypt.compare(credentials.password, user.password);
+		
+		const todoList = await prisma.todos.findFirst({
+			where: {
+				accountId: user.id
+			}
+		});
 
-		console.log('match', match);
-		console.log('user', user);
 		if (match) {
 			return {
 				email: user.email,
-				fullName: user.fullName
+				fullName: user.fullName,
+				listId: todoList?.id
 			};
 		} else {
 			throw new ApplicationError('Password or email is incorrect', 400);

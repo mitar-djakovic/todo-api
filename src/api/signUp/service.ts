@@ -13,11 +13,18 @@ interface SignupValues {
 export const signUpService = async (data: SignupValues) => {
 	const password = await bcrypt.hash(data.password, 10);
 	try {
-		await prisma.account.create({
+		const { id } = await prisma.account.create({
 			data: {
 				email: data.email,
 				fullName: data.fullName,
 				password
+			}
+		});
+		
+		await prisma.todos.create({
+			data: {
+				accountId: id,
+				todos: []
 			}
 		});
 	} catch (error) {

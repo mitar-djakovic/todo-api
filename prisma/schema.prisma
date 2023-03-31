@@ -13,3 +13,15 @@ model Account {
   fullName String
   password String
 }
+
+model Todos {
+  id        String @id @default(uuid()) @map("_id")
+  accountId String @unique
+  todos     Todo[]
+}
+
+type Todo {
+  todo      String
+  completed Boolean
+  todoId    String  @default(uuid())
+}
